@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Books\Commands\" />
-    <Folder Include="Features\Books\Handlers\" />
-    <Folder Include="Features\Books\" />
-    <Folder Include="Features\Books\Queries\" />
 	<Folder Include="Services\" />
 
   </ItemGroup>

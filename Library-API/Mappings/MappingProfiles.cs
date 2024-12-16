@@ -9,6 +9,9 @@ namespace Library_API.Mappings
         public MappingProfiles()
         {
             CreateMap<AuthorDto, Author>();
+            CreateMap<Author,AuthorDto>();
+            CreateMap<BookDto, Book>();
+            CreateMap<Book,BookDto>();
         }
     }
 }
