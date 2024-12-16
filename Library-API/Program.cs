@@ -1,3 +1,4 @@
+using Library_API.Mappings;
 using Library_API.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,9 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(config =>
+builder.Services.AddMediatR(options =>
 {
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    options.RegisterServicesFromAssembly(typeof(Program).Assembly);
+});
+builder.Services.AddAutoMapper(options =>
+{
+    options.AddProfile<MappingProfiles>();
 });
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

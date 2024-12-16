@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Library_API.Features.Authors.CommandHandlers
 {
-    public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand>
+    public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand,Guid>
     {
         private readonly AppDbContext _dbContext;
 
@@ -14,7 +14,7 @@ namespace Library_API.Features.Authors.CommandHandlers
             _dbContext = dbContext;
         }
 
-        public async Task Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
         {
             var author = new Author
             {
@@ -22,6 +22,7 @@ namespace Library_API.Features.Authors.CommandHandlers
             };
             _dbContext.Authors.Add(author);
             await _dbContext.SaveChangesAsync();
+            return author.Id;
         }
     }
 }

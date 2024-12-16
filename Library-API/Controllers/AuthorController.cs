@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Library_API.DTOs;
+using Library_API.Features.Authors.Commands;
 using Library_API.Features.Authors.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,5 +27,14 @@ namespace Library_API.Controllers
             var authorsDto = _mapper.Map<ICollection<AuthorDto>>(authors);
             return Ok(authorsDto);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateAuthor(CreateAuthorCommand authorCommand)
+        {
+            var guid = await _sender.Send(authorCommand);
+            return Ok(guid);
+        }
+
+
     }
 }
