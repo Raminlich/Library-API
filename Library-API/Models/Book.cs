@@ -14,5 +14,6 @@ namespace Library_API.Models
         public Guid AuthorId { get; set; }
         [Required]
         public int PublishedYear { get; set; }
+        public Author Author { get; set; }
     }
 }
