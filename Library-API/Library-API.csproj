@@ -16,11 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Features\" />
-	<Folder Include="Mappings\" />
-	<Folder Include="Persistance\" />
+    <Folder Include="Features\Books\Commands\" />
+    <Folder Include="Features\Books\Handlers\" />
+    <Folder Include="Features\Books\" />
+    <Folder Include="Features\Books\Queries\" />
 	<Folder Include="Services\" />
 
   </ItemGroup>
