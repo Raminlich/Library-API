@@ -51,5 +51,5 @@ or if you are comfortable using Package Manage Console
     ```bash
     Update-Database
     ```
-
-    
+## Reasons of CQRS in this project
+for a more maintainable and scalable read and write operations 
