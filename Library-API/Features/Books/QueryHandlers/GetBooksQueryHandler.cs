@@ -1,24 +1,23 @@
 ﻿using Library_API.Features.Books.Queries;
 using Library_API.Models;
-using Library_API.Persistence.Contexts;
+using Library_API.Persistence.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Library_API.Features.Books.QueryHandlers
 {
     public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, ICollection<Book>>
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetBooksQueryHandler(AppDbContext dbContext)
+        public GetBooksQueryHandler(IUnitOfWork unitOfWork)
         {
-            _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ICollection<Book>> Handle(GetBooksQuery request, CancellationToken cancellationToken)
         {
-            var books = await _dbContext.Books.AsNoTracking().ToArrayAsync();
-            return books;
+            var books = await _unitOfWork.Books.GetAllAsync();
+            return books.ToArray();
         }
     }
 }

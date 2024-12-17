@@ -2,7 +2,6 @@
 using Library_API.DTOs;
 using Library_API.Features.Authors.Commands;
 using Library_API.Features.Authors.Queries;
-using Library_API.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +14,7 @@ namespace Library_API.Controllers
         private readonly ISender _sender;
         private readonly IMapper _mapper;
 
-        public AuthorController(ISender sender,IMapper mapper)
+        public AuthorController(ISender sender, IMapper mapper)
         {
             _sender = sender;
             _mapper = mapper;
@@ -29,7 +28,7 @@ namespace Library_API.Controllers
             return Ok(authorsDto);
         }
 
-        [HttpGet("/AuthorBooks/{id}")]
+        [HttpGet("AuthorBooks/{id}")]
         public async Task<ActionResult<ICollection<BookDto>>> GetAuthorBooks(Guid id)
         {
             var books = await _sender.Send(new GetAuthorBooksQuery(id));
@@ -53,8 +52,9 @@ namespace Library_API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<AuthorDto>> UpdateAuthor(UpdateAuthorCommand updateAuthor)
+        public async Task<ActionResult<AuthorDto>> UpdateAuthor(Guid id, [FromBody] AuthorUpdateDto body)
         {
+            var updateAuthor = new UpdateAuthorCommand(id, body.Name);
             var author = await _sender.Send(updateAuthor);
             var authorDto = _mapper.Map<AuthorDto>(author);
             return Ok(author);

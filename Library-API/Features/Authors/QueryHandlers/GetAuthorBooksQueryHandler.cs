@@ -1,6 +1,6 @@
 ﻿using Library_API.Features.Authors.Queries;
 using Library_API.Models;
-using Library_API.Persistence.Contexts;
+using Library_API.Persistence.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,19 +8,16 @@ namespace Library_API.Features.Authors.QueryHandlers
 {
     public class GetAuthorBooksQueryHandler : IRequestHandler<GetAuthorBooksQuery, ICollection<Book>>
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetAuthorBooksQueryHandler(AppDbContext dbContext)
+        public GetAuthorBooksQueryHandler(IUnitOfWork unitOfWork)
         {
-            _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ICollection<Book>> Handle(GetAuthorBooksQuery request, CancellationToken cancellationToken)
         {
-            var author = await _dbContext.Authors
-                .AsNoTracking()
-                .Include(o => o.Books)
-                .FirstOrDefaultAsync(o => o.Id == request.id);
+            var author = await _unitOfWork.Authors.GetAuthorBooksAsync(request.id);
             if (author == null)
             {
                 throw new KeyNotFoundException("Author not found!");

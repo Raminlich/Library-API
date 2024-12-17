@@ -44,8 +44,9 @@ namespace Library_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<BookDto>> UpdateBook(UpdateBookCommand updateBookCommand)
+        public async Task<ActionResult<BookDto>> UpdateBook(Guid id, [FromBody] BookUpdateDto body)
         {
+            var updateBookCommand = new UpdateBookCommand(id, body.Title, body.AuthorId, body.PublishedYear);
             var book = await _sender.Send(updateBookCommand);
             var bookDto = _mapper.Map<BookDto>(book);
             return Ok(bookDto);

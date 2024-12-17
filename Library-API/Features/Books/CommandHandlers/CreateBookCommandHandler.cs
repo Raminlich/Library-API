@@ -1,17 +1,17 @@
 ﻿using Library_API.Features.Books.Commands;
 using Library_API.Models;
-using Library_API.Persistence.Contexts;
+using Library_API.Persistence.Repositories;
 using MediatR;
 
 namespace Library_API.Features.Books.CommandHandlers
 {
     public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Guid>
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateBookCommandHandler(AppDbContext dbContext)
+        public CreateBookCommandHandler(IUnitOfWork unitOfWork)
         {
-            _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
         }
         public async Task<Guid> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
@@ -21,8 +21,8 @@ namespace Library_API.Features.Books.CommandHandlers
                 AuthorId = request.authorId,
                 PublishedYear = request.publishedYear,
             };
-            _dbContext.Books.Add(book);
-            await _dbContext.SaveChangesAsync();
+            await _unitOfWork.Books.AddAsync(book);
+            await _unitOfWork.SaveAsync();
             return book.Id;
         }
     }

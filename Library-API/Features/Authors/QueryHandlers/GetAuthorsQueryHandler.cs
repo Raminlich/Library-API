@@ -1,24 +1,23 @@
 ﻿using Library_API.Features.Authors.Queries;
 using Library_API.Models;
-using Library_API.Persistence.Contexts;
+using Library_API.Persistence.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Library_API.Features.Authors.QueryHandlers
 {
     public class GetAuthorsQueryHandler : IRequestHandler<GetAuthorsQuery, ICollection<Author>>
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetAuthorsQueryHandler(AppDbContext dbContext)
+        public GetAuthorsQueryHandler(IUnitOfWork unitOfWork)
         {
-            _dbContext = dbContext;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ICollection<Author>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
         {
-            var authors = await _dbContext.Authors.AsNoTracking().ToArrayAsync();
-            return authors;
+            var authors = await _unitOfWork.Authors.GetAllAsync();
+            return authors.ToArray();
         }
     }
 }
