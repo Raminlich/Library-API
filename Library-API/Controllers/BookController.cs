@@ -2,7 +2,6 @@
 using Library_API.DTOs;
 using Library_API.Features.Books.Commands;
 using Library_API.Features.Books.Queries;
-using Library_API.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,11 +21,19 @@ namespace Library_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<Book>>> GetBooks()
+        public async Task<ActionResult<ICollection<BookDto>>> GetBooks()
         {
             var books = await _sender.Send(new GetBooksQuery());
             var booksDto = _mapper.Map<ICollection<BookDto>>(books);
-            return Ok(books);
+            return Ok(booksDto);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BookDto>> GetBookById(Guid id)
+        {
+            var book = await _sender.Send(new GetBookByIdQuery(id));
+            var bookDto = _mapper.Map<BookDto>(book);
+            return Ok(bookDto);
         }
 
         [HttpPost]
@@ -34,6 +41,14 @@ namespace Library_API.Controllers
         {
             var guid = await _sender.Send(bookCommand);
             return Ok(guid);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<BookDto>> UpdateBook(UpdateBookCommand updateBookCommand)
+        {
+            var book = await _sender.Send(updateBookCommand);
+            var bookDto = _mapper.Map<BookDto>(book);
+            return Ok(bookDto);
         }
 
 
