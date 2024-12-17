@@ -1,8 +1,8 @@
 # Library-API
 
 A Web Api written in .NET Core 8 with SQL Server for Books and Authors management
-Third party Packages:
 
+Third party Packages:
 1. MediatR (for CQRS pattern)
 2. AutoMapper (for object mapping)
 
